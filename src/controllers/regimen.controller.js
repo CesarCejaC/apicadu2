@@ -40,12 +40,10 @@ module.exports = {
                 res.json({ error: true, message: 'The registry was not found, invalid id', 'datos:': err })
                 console.log('El id proporcionado es inválido')
             } else {
-                dbConn.query("UPDATE crm_cat_regimen_matrimonial SET regimen_matrimonial=?,descripcion=?,id_usuario_alta=?,id_usuario_edicion=?,eliminado=? WHERE id = ?",
-                    [req.body.regimen_matrimonial, req.body.descripcion, req.body.id_usuario_alta, req.body.id_usuario_edicion, req.body.eliminado, req.params.id],
-                    () => {
-                        res.json({ error: false, message: 'Registry updated', 'datos: ': req.body })
-                        console.log('Registro actualizado')
-                    })
+                dbConn.query("UPDATE crm_cat_regimen_matrimonial SET regimen_matrimonial=?,descripcion=?,id_usuario_alta=?,id_usuario_edicion=?,eliminado=? WHERE id = ?", [req.body.regimen_matrimonial, req.body.descripcion, req.body.id_usuario_alta, req.body.id_usuario_edicion, req.body.eliminado, req.params.id], () => {
+                    res.json({ error: false, message: 'Registry updated', 'datos: ': req.body })
+                    console.log('Registro actualizado')
+                })
             }
         })
     },
