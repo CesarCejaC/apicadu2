@@ -1,52 +1,47 @@
-const RegimenController = require('../models/regimen.model')
+var dbConn = require('../../config/db.config');
 
 module.exports = {
-    create: function (req, res) {
-        const new_regimen = new RegimenController(req.body)
-        RegimenController.create(new_regimen, function (err, regimen) {
-            if (err)
-                res.send(err);
-            res.status(201).json({ error: false, message: "Register added successfully!", 'datos: ': req.body })
+    create: async (req, result) => {
+        dbConn.query("INSERT INTO crm_cat_regimen_matrimonial set ?", req.body, () => {
+            result.json({ error: false, message: 'Registry created', 'datos: ': req.body });
+            console.log('registro creado')
         });
     },
-    findAll: function (req, res) {
-        RegimenController.findAll(function (err, regimen) {
-            if (err)
-                res.send(err);
-            res.send(regimen);
+    findAll: async result => {
+        dbConn.query("Select * from crm_cat_regimen_matrimonial", res => {
+            result.json({ error: false, message: 'Registries found', 'datos: ': res });
+            console.log('Registros encontrados')
         });
     },
-    findById: function (req, res) {
-        RegimenController.findById(req.params.id, function (err, regimen) {
-            if (err)
-                res.send(err);
-            if (regimen == "") {
-                return res.json({ error: true, message: 'The registry was not found, invalid id' });
-            }
-            res.json({ error: false, message: 'Registry found', 'datos: ': regimen });
-        });
+    findById: async (req, result) => {
+        dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, res => {
+            if (res == "" || res === 0) {return result.json({ error: true, message: 'The registry was not found, invalid id' });}
+            result.json({ error: false, message: 'Registry found', 'datos: ': res });
+            console.log('búsqueda realizada')
+        })
     },
-    update: function (req, res) {
-        RegimenController.update(req.params.id, new RegimenController(req.body), function (err, regimen) {
-            if (err)
-                res.send(err);
-            if (regimen === null) {
-                res.json({ error: true, message: 'The registry was not updated, invalid id' });
+    update: async (req, result) => {
+        dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, (err, res) => {
+            if (res == "" || res === 0) {return result.json({ error: true, message: 'The registry was not found, invalid id' });
             } else {
-                res.json({ error: false, message: 'Registry successfully updated', 'datos: ': req.body });
+                dbConn.query("UPDATE crm_cat_regimen_matrimonial SET regimen_matrimonial=?,descripcion=?,id_usuario_alta=?,id_usuario_edicion=?,eliminado=? WHERE id = ?",
+                [req.body.regimen_matrimonial, req.body.descripcion, req.body.id_usuario_alta, req.body.id_usuario_edicion, req.body.eliminado, req.params.id],
+                () => {
+                    result.json({ error: false, message: 'Registry updated', 'datos: ': req.body })
+                    console.log('registro actualizado')
+                })
             }
-        });
+        })
     },
-    delete: function (req, res) {
-        RegimenController.delete(req.params.id, function (err, regimen) {
-            if (err)
-                res.send(err);
-            if (regimen === null) {
-                res.json({ error: true, message: 'Registry was not deleted, invalid id' });
+    delete: async (req, result) => {
+        dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, res => {
+            if (res == "" || res === 0) {return result.json({ error: true, message: 'The registry was not found, invalid id' });
+            } else {
+                dbConn.query("UPDATE crm_cat_regimen_matrimonial SET eliminado= 1 WHERE id = ?", req.params.id, () => {
+                    result.json({ error: false, message: 'Registry deleted' })
+                    console.log('registro eliminado')
+                })
             }
-            else{
-                res.json({ error: false, message: 'Registry successfully deleted' });
-            }
-        });
-    },
+        })
+    }
 }

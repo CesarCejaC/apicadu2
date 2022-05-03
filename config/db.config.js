@@ -14,7 +14,7 @@ const dbConn = mysql.createConnection({
   password : PWD,
   database : DB
 });
-dbConn.connect(function(err) {
+dbConn.connect((err)=> {
   if (err) throw err;
   console.log("Database Connected!");
 });
