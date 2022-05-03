@@ -7,14 +7,15 @@ module.exports = {
             console.log('registro creado')
         });
     },
-    findAll: async result => {
-        dbConn.query("Select * from crm_cat_regimen_matrimonial", res => {
-            result.json({ error: false, message: 'Registries found', 'datos: ': res });
+    findAll: async (req, result) => {
+        dbConn.query("Select * from crm_cat_regimen_matrimonial", (req, res) => {
+            result.send(res)
+            //result.json({ error: false, message: 'Registries found', 'datos: ': (res) });
             console.log('Registros encontrados')
         });
     },
     findById: async (req, result) => {
-        dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, res => {
+        dbConn.query("Select * from crm_cat_regimen_matrimonial where id = ? ", req.params.id, (req,res) => {
             if (res == "" || res === 0) {return result.json({ error: true, message: 'The registry was not found, invalid id' });}
             result.json({ error: false, message: 'Registry found', 'datos: ': res });
             console.log('búsqueda realizada')
