@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }))
 //root page
 app.get('/', (req, res) => {
     res.send('This is the root page')
-    console.log(process.env)
+    console.log('root page')
 })
 
 //regimen roots

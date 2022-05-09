@@ -1,21 +1,16 @@
-const express = require('express')
+const express= require('express')
 const router = express.Router()
-const regimenController = require('../controllers/regimen.controller')
+const { getAll, getById, create, updateById, deleteById} = require('../controllers/regimen.controller')
 const {validatePostAndPut, validategetByIdAndDelete} = require('../validators/regimen.validator')
 
-//crear regimen
-router.post('/', validatePostAndPut, regimenController.create)
+router.get('/', getAll)
 
-//seleccionar todos
-router.get('/', regimenController.findAll)
+router.get('/:id',validategetByIdAndDelete, getById)
 
-//seleccionar por id
-router.get('/:id', validategetByIdAndDelete, regimenController.findById)
+router.post('/',validatePostAndPut, create)
 
-//actualizar por id
-router.put('/:id', validatePostAndPut, regimenController.update)
+router.put('/:id',validatePostAndPut, updateById)
 
-//borrar por id
-router.delete('/:id', validategetByIdAndDelete, regimenController.delete)
+router.delete('/:id',validategetByIdAndDelete, deleteById)
 
 module.exports = router

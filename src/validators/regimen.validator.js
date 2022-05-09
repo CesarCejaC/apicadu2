@@ -5,6 +5,7 @@ const validatePostAndPut = [
     check('regimen_matrimonial')
         .exists()
         .withMessage('Is required')
+        .notEmpty()
         .trim()
         .isLength({ min: 3 })
         .withMessage('Must have minimum 3 chars'),
@@ -17,18 +18,21 @@ const validatePostAndPut = [
     check('id_usuario_alta')
         .exists()
         .withMessage('Is required')
+        .notEmpty()
         .trim()
         .isNumeric()
         .withMessage('Must be a number'),
     check('id_usuario_edicion')
         .exists()
         .withMessage('Is required')
+        .notEmpty()
         .trim()
         .isNumeric()
         .withMessage('Must be a number'),
     check('eliminado')
         .exists()
         .withMessage('Is required')
+        .notEmpty()
         .trim()
         .isNumeric()
         .withMessage('Must be a number')
@@ -46,9 +50,9 @@ const validategetByIdAndDelete = [
         .trim()
         .isNumeric()
         .withMessage('Must be a number'),
-        (req, res, next) => {
-            validateResult(req, res, next);
-        }
+    (req, res, next) => {
+        validateResult(req, res, next);
+    }
 ]
 
 module.exports = { validatePostAndPut, validategetByIdAndDelete }
